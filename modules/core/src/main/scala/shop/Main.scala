@@ -13,7 +13,7 @@ import org.typelevel.log4cats.slf4j.Slf4jLogger
 
 object Main extends IOApp.Simple {
 
-  implicit val logger = Slf4jLogger.getLogger[IO]
+  implicit val logger: Logger[IO] = Slf4jLogger.getLogger[IO]
 
   override def run: IO[Unit] =
     Config.load[IO].flatMap { cfg =>

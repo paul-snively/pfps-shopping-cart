@@ -1,12 +1,26 @@
 import Dependencies._
 
-ThisBuild / scalaVersion := "2.13.8"
+ThisBuild / scalaVersion := "2.13.12"
 ThisBuild / version := "2.0.0"
 ThisBuild / organization := "dev.profunktor"
 ThisBuild / organizationName := "ProfunKtor"
 
 ThisBuild / evictionErrorLevel := Level.Warn
 ThisBuild / scalafixDependencies += Libraries.organizeImports
+
+ThisBuild / versionScheme := Some("early-semver")
+
+ThisBuild / publishMavenStyle := true
+ThisBuild / publish / skip := true
+ThisBuild / publishTo := Some(
+  "GitHub Package Registry " at "https://maven.pkg.github.com/paul-snively/pfps-shopping-cart"
+)
+ThisBuild / credentials += Credentials(
+  "GitHub Package Registry", // realm
+  "maven.pkg.github.com", // host
+  "paul-snively", // user
+  sys.env.getOrElse("GITHUB_TOKEN", "abc123") // password
+)
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 
@@ -90,7 +104,8 @@ lazy val core = (project in file("modules/core"))
       Libraries.skunkCore,
       Libraries.skunkCirce,
       Libraries.squants
-    )
+    ),
+    publish / skip := false
   )
 
 addCommandAlias("runLinter", ";scalafixAll --rules OrganizeImports")

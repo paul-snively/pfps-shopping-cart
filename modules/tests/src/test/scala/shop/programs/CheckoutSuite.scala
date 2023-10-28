@@ -25,6 +25,8 @@ import retry.RetryPolicy
 import squants.market._
 import weaver.SimpleIOSuite
 import weaver.scalacheck.Checkers
+import shop.effects.Background
+import org.typelevel.log4cats.Logger
 
 object CheckoutSuite extends SimpleIOSuite with Checkers {
 
@@ -98,8 +100,8 @@ object CheckoutSuite extends SimpleIOSuite with Checkers {
     crd <- cardGen
   } yield (uid, pid, oid, crt, crd)
 
-  implicit val bg = TestBackground.NoOp
-  implicit val lg = NoOpLogger[IO]
+  implicit val bg: Background[IO] = TestBackground.NoOp
+  implicit val lg: Logger[IO] = NoOpLogger[IO]
 
   test("empty cart") {
     forall(gen) {
